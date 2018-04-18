@@ -1,0 +1,50 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion compileSdk
+
+    defaultConfig {
+        applicationId "com.hlabexmaples.easyapidemo"
+        minSdkVersion minSdk
+        targetSdkVersion targetSdk
+        versionCode 1
+        versionName "1.0"
+    }
+    dataBinding {
+        enabled = true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    configurations.all {
+        resolutionStrategy.force "com.android.support:support-v4:$supportLibrary"
+        resolutionStrategy.force "com.android.support:appcompat-v7:$supportLibrary"
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    /*Support*/
+    implementation "com.android.support:support-v4:$supportLibrary"
+    implementation "com.android.support:design:$supportLibrary"
+    implementation "com.android.support:appcompat-v7:$supportLibrary"
+    /*Networking*/
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit"
+    /*RxJava*/
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxjava"
+    /*Architecture Components*/
+    implementation "android.arch.lifecycle:extensions:$arch"
+    /*Other*/
+    implementation "com.github.bumptech.glide:glide:$glide"
+}
+
