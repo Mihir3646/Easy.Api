@@ -3,6 +3,7 @@
 package com.hlabexamples.easyapi.kotlin.data.easyapi.main
 
 import android.content.Context
+import android.view.View
 import com.hlabexmaples.easyapi.data.easyapi.util.LoaderInterface
 import com.hlabexmaples.easyapi.data.easyapi.util.NetworkUtils
 import retrofit2.Call
@@ -27,7 +28,7 @@ class EasyApi<T : Base<*>>(private val context: Context) {
         return this
     }
 
-    fun execute(responseHandler: ResponseHandler<T>) {
+    fun execute(responseHandler:  (response: T, isSuccess: Boolean, successMessage: String) -> Unit/*responseHandler: ResponseHandler<T>*/) {
         if (NetworkUtils.isNetworkOn(context)) {
             val callback = object : Callback<T> {
 
@@ -39,7 +40,7 @@ class EasyApi<T : Base<*>>(private val context: Context) {
                             val responseBody = response.body()
                             responseBody?.let {
                                 //TODO Handle extra data for checking success, message etc from base class
-                                responseHandler.onResponse(it,
+                                responseHandler.invoke(it,
                                         /*((T) responseBody.getData()).isSuccess()*/ true,
                                         it.message.toString())
                             }
@@ -66,5 +67,9 @@ class EasyApi<T : Base<*>>(private val context: Context) {
             call!!.enqueue(callback)
         } else
             loaderInterface?.showNoInternet()
+    }
+
+    fun execute(responseHandler:  (response: T) -> Unit){
+
     }
 }

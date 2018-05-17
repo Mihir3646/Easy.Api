@@ -36,8 +36,6 @@ class UsersFragmentWithViewModel : BaseFragment<FragmentUsersBinding>(), TabLayo
             if (users != null && users.isNotEmpty()) {
                 hideLoading()
                 adapter.setUserList(users)
-            } else {
-                showLoading()
             }
             binding.executePendingBindings()
         })
@@ -80,20 +78,18 @@ class UsersFragmentWithViewModel : BaseFragment<FragmentUsersBinding>(), TabLayo
 
     private fun fetchUsers() {
         viewModel.resetData()
-        activity?.let { viewModel.fetchUsers(it, this) }
+        viewModel.fetchUsers(this)
     }
 
     private fun fetchUsersRx() {
         viewModel.resetData()
-        activity?.let { viewModel.fetchUsersRx(it, this) }
+        viewModel.fetchUsersRx(this)
     }
 
     /*Example*/
     private fun fetchNextUsers() {
-        activity?.let {
-            viewModel.setNextPage()
-            viewModel.fetchUsersRx(it, this)
-        }
+        viewModel.setNextPage()
+        viewModel.fetchUsersRx(this)
     }
 
     override fun onClick(view: View) {

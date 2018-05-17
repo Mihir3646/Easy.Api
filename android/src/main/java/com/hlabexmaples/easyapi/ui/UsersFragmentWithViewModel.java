@@ -89,18 +89,18 @@ public class UsersFragmentWithViewModel extends BaseFragment<FragmentUsersBindin
 
     private void fetchUsers() {
         viewModel.resetData();
-        viewModel.fetchUsers(getActivity(), this);
+        viewModel.fetchUsers(this);
     }
 
     private void fetchUsersRx() {
         viewModel.resetData();
-        viewModel.fetchUsersRx(getActivity(), this);
+        viewModel.fetchUsersRx(this);
     }
 
     /*Example*/
     private void fetchNextUsers() {
         viewModel.setNextPage();
-        viewModel.fetchUsersRx(getActivity(), this);
+        viewModel.fetchUsersRx(this);
     }
 
     @Override

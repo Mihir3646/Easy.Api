@@ -76,7 +76,7 @@ public class NetworkUtils {
 
     /**
      * Checks the Network availability
-     *
+     *  Only if using RxJava
      * @return observable to check internet available
      */
     public static Observable<Boolean> isNetworkAvailable(Context context) {

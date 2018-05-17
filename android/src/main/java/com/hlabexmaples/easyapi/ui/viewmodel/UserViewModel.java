@@ -42,8 +42,8 @@ public class UserViewModel extends AndroidViewModel {
      * Api call with EasyApi
      * Expose the LiveData Products query so the UI can observe it.
      */
-    public void fetchUsers(Context context, LoaderInterface loaderInterface) {
-        new EasyApi<Envelop<List<User>>>(context)
+    public void fetchUsers(LoaderInterface loaderInterface) {
+        new EasyApi<Envelop<List<User>>>(getApplication())
                 .setLoaderInterface(loaderInterface)
                 .initCall(ApiFactory.getInstance().fetchUsers(String.valueOf(pageNo)))
                 .execute((response, isSuccess, successMessage) -> {
@@ -57,8 +57,8 @@ public class UserViewModel extends AndroidViewModel {
      * Api call with EasyApiRx
      * Expose the LiveData Products query so the UI can observe it.
      */
-    public void fetchUsersRx(Context context, LoaderInterface loaderInterface) {
-        DisposableObserver<?> d = new EasyApiRx<Envelop<List<User>>>(context)
+    public void fetchUsersRx(LoaderInterface loaderInterface) {
+        DisposableObserver<?> d = new EasyApiRx<Envelop<List<User>>>(getApplication())
                 .initCall(ApiFactory.getInstance().fetchUsersWithRx(String.valueOf(pageNo)))
                 .setLoaderInterface(loaderInterface)
                 .execute((response, isSuccess, message) -> {
@@ -89,4 +89,6 @@ public class UserViewModel extends AndroidViewModel {
             disposable.dispose();
         }
     }
+
+
 }

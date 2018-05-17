@@ -21,7 +21,7 @@ class EasyApiRx<T : Base<*>>(private val context: Context) {
     private var loaderInterface: LoaderInterface? = null
     private var call: Observable<T>? = null
 
-    private val source: Observable<T>?
+    val source: Observable<T>?
         get() = NetworkUtils.isNetworkAvailable(context).filter({ available ->
             if (!available)
                 loaderInterface!!.showNoInternet()
@@ -42,41 +42,30 @@ class EasyApiRx<T : Base<*>>(private val context: Context) {
         return this
     }
 
-    fun execute(responseHandler: ResponseHandler<T>): DisposableObserver<T>? {
+    /**
+     * Default Executor
+     */
+    fun execute(responseHandler:  (response: T, isSuccess: Boolean, successMessage: String) -> Unit/*responseHandler: ResponseHandler<T>*/): DisposableObserver<T>? {
         val disposable = getDisposableObserver(responseHandler)
-
-        val source = source
 
         if (source != null) {
             if (loaderInterface != null)
                 loaderInterface!!.showLoading()
 
-            source.subscribe(disposable)
+            source!!.subscribe(disposable)
             return disposable
         }
         return null
 
     }
 
-    fun executeWith(observer: Observer<T>) {
-        val source = source
-
-        source?.subscribe(observer)
-    }
-
-    fun executeWith(successConsumer: Consumer<T>, failureConsumer: Consumer<Throwable>) {
-        val source = source
-
-        source?.subscribe(successConsumer, failureConsumer)
-    }
-
-    private fun getDisposableObserver(responseHandler: ResponseHandler<T>): DisposableObserver<T> {
+    private fun getDisposableObserver(responseHandler:  (response: T, isSuccess: Boolean, successMessage: String) -> Unit/*responseHandler: ResponseHandler<T>*/): DisposableObserver<T> {
         return object : DisposableObserver<T>() {
             override fun onNext(responseBody: T?) {
                 try {
                     responseBody?.let {
                         //TODO Handle extra data for checking success, message etc from base class
-                        responseHandler.onResponse(it,
+                        responseHandler.invoke(it,
                                 /*((T) responseBody.getData()).isSuccess()*/ true,
                                 it.message.toString())
                     }
@@ -109,4 +98,18 @@ class EasyApiRx<T : Base<*>>(private val context: Context) {
     private fun <F> applyObservableAsync(): ObservableTransformer<F, F> {
         return ObservableTransformer { observable -> observable.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()) }
     }
+}
+
+/**
+ * Extension function : Execute with Consumer
+ */
+fun <T : Base<*>> EasyApiRx<T>.executeWith(successConsumer: Consumer<T>, failureConsumer: Consumer<Throwable>) {
+    source?.subscribe(successConsumer, failureConsumer)
+}
+
+/**
+ * Extension function : Execute with custom observer
+ */
+fun <T : Base<*>> EasyApiRx<T>.executeWith(observer: Observer<T>) {
+    source?.subscribe(observer)
 }

@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentActivity
 import android.view.View
 import com.hlabexamples.easyapi.kotlin.data.easyapi.main.EasyApi
 import com.hlabexamples.easyapi.kotlin.data.easyapi.main.EasyApiRx
-import com.hlabexamples.easyapi.kotlin.data.easyapi.main.ResponseHandler
+import com.hlabexamples.easyapi.kotlin.data.easyapi.main.executeWith
 import com.hlabexamples.easyapi.kotlin.data.models.Envelop
 import com.hlabexamples.easyapi.kotlin.data.models.User
 import com.hlabexamples.easyapi.kotlin.data.webservice.ApiFactory
@@ -64,13 +64,11 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>(), TabLayout.OnTabSelec
         EasyApi<Envelop<List<User>>>(Objects.requireNonNull<FragmentActivity>(activity))
                 .setLoaderInterface(this)
                 .initCall(ApiFactory.instance!!.fetchUsers("1"))
-                .execute(object : ResponseHandler<Envelop<List<User>>> {
-                    override fun onResponse(response: Envelop<List<User>>, isSuccess: Boolean, successMessage: String) {
-                        if (isSuccess) {
-                            adapter?.setUserList(response.data!!)
-                        }
+                .execute { response, isSuccess, _ ->
+                    if (isSuccess) {
+                        adapter?.setUserList(response.data!!)
                     }
-                })
+                }
     }
 
     /**
@@ -81,13 +79,11 @@ class UsersFragment : BaseFragment<FragmentUsersBinding>(), TabLayout.OnTabSelec
         val d = EasyApiRx<Envelop<List<User>>>(Objects.requireNonNull<FragmentActivity>(activity))
                 .setLoaderInterface(this)
                 .initCall(ApiFactory.instance!!.fetchUsersWithRx("1"))
-                .execute(object : ResponseHandler<Envelop<List<User>>> {
-                    override fun onResponse(response: Envelop<List<User>>, isSuccess: Boolean, successMessage: String) {
-                        if (isSuccess) {
-                            adapter?.setUserList(response.data!!)
-                        }
+                .execute { response, isSuccess, _ ->
+                    if (isSuccess) {
+                        adapter?.setUserList(response.data!!)
                     }
-                })
+                }
         disposable!!.add(d!!)
     }
 
