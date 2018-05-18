@@ -1,3 +1,5 @@
+![logo](https://i.imgur.com/bVbtVPV.png)
+
 # Easy.Api
 Easy.Api is a bundle of utility classes which helps to call the RESTful webservices as quickly as never before. It also allows use of RxJava with only fewer implementation detail. It also works with kotlin.
 
@@ -71,6 +73,9 @@ III. Error handling
 
 IV. Success/failure check
 
+
+![sample_home](https://i.imgur.com/rWhZXsv.png)
+![sample_detail](https://i.imgur.com/4iU4ZrI.png)
 
 ***
 
