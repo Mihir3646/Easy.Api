@@ -68,8 +68,4 @@ class EasyApi<T : Base<*>>(private val context: Context) {
         } else
             loaderInterface?.showNoInternet()
     }
-
-    fun execute(responseHandler:  (response: T) -> Unit){
-
-    }
 }

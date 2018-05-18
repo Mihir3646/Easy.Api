@@ -14,6 +14,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         replace(R.id.container, new MethodSelectionFragment());
+
     }
 
     /**
