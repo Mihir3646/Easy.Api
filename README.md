@@ -7,6 +7,19 @@ Easy.Api is a bundle of utility classes which helps to call the RESTful webservi
 
 It is just a wrapper utility class over retrofit call, which provides you ability to write concise and less lines of code with flexibility of changing loading and error handling behavior as per your need on specific screens of your application
 
+
+### It will handle below actions for you:
+
+I. Network connectivity check
+
+II. Loading behavior
+
+III. Error handling
+
+IV. Success/failure check
+
+
+
 Let's see it in action 💻📲
 
 1. Default request:
@@ -62,16 +75,6 @@ Let's see it in action 💻📲
                 }
        disposable!!.add(d!!)
 ````
-
-### It will handle below actions for you:
-
-I. Network connectivity check
-
-II. Loading behavior
-
-III. Error handling
-
-IV. Success/failure check
 
 
 ![sample_home](https://i.imgur.com/rWhZXsv.png)
