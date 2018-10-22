@@ -13,56 +13,74 @@ import com.hlabexmaples.easyapi.R
  */
 object DialogUtils {
 
-    /**
-     * Displays alert dialog to show common messages.
-     *
-     * @param message Message to be shown in the Dialog displayed
-     * @param context Context of the Application, where the Dialog needs to be displayed
-     */
-    fun displayDialog(context: Context, message: String) {
+  /**
+   * Displays alert dialog to show common messages.
+   *
+   * @param message Message to be shown in the Dialog displayed
+   * @param context Context of the Application, where the Dialog needs to be displayed
+   */
+  fun displayDialog(
+    context: Context,
+    message: String
+  ) {
 
-        val alertDialog = AlertDialog.Builder(context).create()
-        alertDialog.setTitle(context.getString(R.string.app_name))
-        alertDialog.setCancelable(false)
+    val alertDialog = AlertDialog.Builder(context)
+        .create()
+    alertDialog.setTitle(context.getString(R.string.app_name))
+    alertDialog.setCancelable(false)
 
-        alertDialog.setMessage(message)
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(android.R.string.ok)) { dialog, _ -> dialog.dismiss() }
+    alertDialog.setMessage(message)
+    alertDialog.setButton(
+        AlertDialog.BUTTON_POSITIVE, context.getString(android.R.string.ok)
+    ) { dialog, _ -> dialog.dismiss() }
 
-        if (!(context as Activity).isFinishing) {
-            alertDialog.show()
-        }
+    if (!(context as Activity).isFinishing) {
+      alertDialog.show()
     }
+  }
 
-    /**
-     * Displays alert dialog to show common messages.
-     *
-     * @param message Message to be shown in the Dialog displayed
-     * @param context Context of the Application, where the Dialog needs to be displayed
-     */
-    fun displayDialogSettings(context: Context, message: String) {
+  /**
+   * Displays alert dialog to show common messages.
+   *
+   * @param message Message to be shown in the Dialog displayed
+   * @param context Context of the Application, where the Dialog needs to be displayed
+   */
+  fun displayDialogSettings(
+    context: Context,
+    message: String
+  ) {
 
-        val alertDialog = AlertDialog.Builder(context).create()
-        alertDialog.setTitle(context.getString(R.string.app_name))
-        alertDialog.setCancelable(false)
+    val alertDialog = AlertDialog.Builder(context)
+        .create()
+    alertDialog.setTitle(context.getString(R.string.app_name))
+    alertDialog.setCancelable(false)
 
-        alertDialog.setMessage(message)
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(R.string.cancel)) { dialog, _ ->
-            context.startActivity(Intent(android.provider.Settings.ACTION_SECURITY_SETTINGS))
-            dialog.dismiss()
-        }
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(R.string.settings)) { dialog, _ -> dialog.dismiss() }
-
-        if (!(context as Activity).isFinishing) {
-            alertDialog.show()
-        }
+    alertDialog.setMessage(message)
+    alertDialog.setButton(
+        AlertDialog.BUTTON_NEGATIVE, context.getString(R.string.cancel)
+    ) { dialog, _ ->
+      context.startActivity(Intent(android.provider.Settings.ACTION_SECURITY_SETTINGS))
+      dialog.dismiss()
     }
+    alertDialog.setButton(
+        AlertDialog.BUTTON_POSITIVE, context.getString(R.string.settings)
+    ) { dialog, _ -> dialog.dismiss() }
 
-    /**
-     * Displays toast message
-     *
-     * @param mContext requires to create Toast
-     */
-    fun showToast(mContext: Context, message: String) {
-        Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show()
+    if (!(context as Activity).isFinishing) {
+      alertDialog.show()
     }
+  }
+
+  /**
+   * Displays toast message
+   *
+   * @param mContext requires to create Toast
+   */
+  fun showToast(
+    mContext: Context,
+    message: String
+  ) {
+    Toast.makeText(mContext, message, Toast.LENGTH_SHORT)
+        .show()
+  }
 }

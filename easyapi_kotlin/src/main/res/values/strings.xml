@@ -1,0 +1,11 @@
+<resources>
+  <string name="app_name">Easyapi_Kotlin</string>
+
+  <string name="ok">OK</string>
+  <string name="cancel">Cancel</string>
+  <string name="settings">SETTINGS</string>
+
+  <string name="alert_message_error">Something went wrong please try after sometime.</string>
+  <string name="alert_no_connection">No internet connection</string>
+
+</resources>

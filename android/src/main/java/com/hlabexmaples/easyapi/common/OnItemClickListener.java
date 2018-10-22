@@ -5,5 +5,5 @@ package com.hlabexmaples.easyapi.common;
  */
 
 public interface OnItemClickListener {
-    void onItemClick(int position);
+  void onItemClick(int position);
 }

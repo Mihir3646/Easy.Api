@@ -2,83 +2,85 @@ package com.hlabexamples.easyapi.kotlin.ui.viewmodel
 
 import android.app.Application
 import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.MediatorLiveData
-import com.hlabexamples.easyapi.kotlin.data.easyapi.main.EasyApi
-import com.hlabexamples.easyapi.kotlin.data.easyapi.main.EasyApiRx
+import android.arch.lifecycle.MutableLiveData
+import com.hlab.easyapi_kotlin.easyapi.main.api.EasyApiBase.Builder
+import com.hlab.easyapi_kotlin.easyapi.main.api.EasyApiCall
+import com.hlab.easyapi_kotlin.easyapi.util.STATE
 import com.hlabexamples.easyapi.kotlin.data.models.Envelop
 import com.hlabexamples.easyapi.kotlin.data.models.User
 import com.hlabexamples.easyapi.kotlin.data.webservice.ApiFactory
-import com.hlabexmaples.easyapi.data.easyapi.util.LoaderInterface
-import io.reactivex.disposables.CompositeDisposable
 
 /**
  * Created by H.T. on 22/02/18.
  */
 
 class UserViewModel(application: Application) : AndroidViewModel(application) {
-    val usersLiveData: MediatorLiveData<List<User>>
-    private val disposable: CompositeDisposable?
+  val usersLiveData: MutableLiveData<List<User>> = MutableLiveData()
+  private val loadingStateLiveData: MutableLiveData<STATE> = MutableLiveData()
 
-    private var pageNo = 1
+  private var usersListApi: EasyApiCall<Envelop<List<User>>>? = null
+  private var usersListRxApi: EasyApiCall<Envelop<List<User>>>? = null
 
-    init {
+  private var pageNo = 1
 
-        disposable = CompositeDisposable()
-        // initialize live data
-        usersLiveData = MediatorLiveData()
-        // set by default null
-        usersLiveData.value = null
+  init {
 
-    }
+    // initialize live data
+    // set by default null
+    usersLiveData.value = null
+    usersListApi = Builder<Envelop<List<User>>>(application)
+        .attachLoadingLiveData(loadingStateLiveData)
+        .build()
+    usersListRxApi =
+        Builder<Envelop<List<User>>>(application)
+            .attachLoadingLiveData(loadingStateLiveData)
+            .configureWithRx()
+            .build()
+  }
 
-    /**
-     * Api call with EasyApi
-     * Expose the LiveData Products query so the UI can observe it.
-     */
-    fun fetchUsers(loaderInterface: LoaderInterface) {
-        EasyApi<Envelop<List<User>>>(getApplication())
-                .setLoaderInterface(loaderInterface)
-                .initCall(ApiFactory.instance!!.fetchUsers(pageNo.toString()))
-                .execute { response, isSuccess, _ ->
-                    if (isSuccess) {
-                        usersLiveData.value = response.data
-                    }
-                }
-    }
-
-
-    /**
-     * Api call with EasyApiRx
-     * Expose the LiveData Products query so the UI can observe it.
-     */
-    fun fetchUsersRx(loaderInterface: LoaderInterface) {
-        val d = EasyApiRx<Envelop<List<User>>>(getApplication())
-                .initCall(ApiFactory.instance!!.fetchUsersWithRx(pageNo.toString()))
-                .setLoaderInterface(loaderInterface)
-                .execute { response, isSuccess, _ ->
-                    if (isSuccess) {
-                        usersLiveData.value = response.data
-                    }
-                }
-        disposable!!.add(d!!)
-    }
-
-    /**
-     * Test function to reset live data, DON'T do in actual development
-     */
-    fun resetData() {
-        usersLiveData.value = null
-    }
-
-    fun setNextPage() {
-        pageNo++
-    }
-
-    fun onDestroy() {
-        if (disposable != null && !disposable.isDisposed) {
-            disposable.dispose()
+  /**
+   * Api call with EasyApi
+   * Expose the LiveData Products query so the UI can observe it.
+   */
+  fun fetchUsers() {
+    usersListApi?.initCall(ApiFactory.instance!!.fetchUsers("1"))!!
+        .execute(true) { response, isError: Boolean ->
+          if (!isError)
+            usersLiveData.value = response?.data
         }
-    }
+  }
+
+  /**
+   * Api call with EasyApiRx
+   * Expose the LiveData Products query so the UI can observe it.
+   */
+  fun fetchUsersRx() {
+    usersListRxApi?.initCall(ApiFactory.instance!!.fetchUsersWithRx("1"))!!
+        .execute(true) { response, isError ->
+          if (!isError)
+            usersLiveData.value = response?.data
+        }
+  }
+
+  /**
+   * Test function to reset live data, DON'T do in actual development
+   */
+  fun resetData() {
+    usersLiveData.value = null
+  }
+
+  fun setNextPage() {
+    pageNo++
+  }
+
+  fun onDestroy() {
+    usersListApi?.dispose()
+    usersListRxApi?.dispose()
+  }
+
+  fun getLoadingStateLiveData(): MutableLiveData<STATE>? {
+    return loadingStateLiveData
+  }
 
 //    /*Extension function*/
 //    private fun <T : Base<*>> EasyApi<T>.execute() {

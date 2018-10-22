@@ -14,92 +14,95 @@ import com.hlabexmaples.easyapi.databinding.FragmentUsersBinding
  * Created by H.T. on 22/02/18.
  */
 
-class UsersFragmentWithViewModel : BaseFragment<FragmentUsersBinding>(), TabLayout.OnTabSelectedListener {
+class UsersFragmentWithViewModel : BaseFragment<FragmentUsersBinding>(),
+    TabLayout.OnTabSelectedListener {
 
-    private lateinit var adapter: UserListAdapter
-    private lateinit var viewModel: UserViewModel
+  private lateinit var adapter: UserListAdapter
+  private lateinit var viewModel: UserViewModel
 
-    override fun defineLayoutResource(): Int {
-        return R.layout.fragment_users
+  override fun defineLayoutResource(): Int {
+    return R.layout.fragment_users
+  }
+
+  override fun initializeComponent(view: View) {
+
+    viewModel = ViewModelProviders.of(this)
+        .get(UserViewModel::class.java)
+
+    adapter = UserListAdapter()
+    binding.rvUsers.adapter = adapter
+
+    binding.tab.addOnTabSelectedListener(this)
+
+    viewModel.usersLiveData.observe(this, Observer<List<User>> { users ->
+      if (users != null && users.isNotEmpty()) {
+        hideLoading()
+        adapter.setUserList(users)
+      }
+      binding.executePendingBindings()
+    })
+    observeLoadingState(viewModel.getLoadingStateLiveData())
+
+    fetchUsers()
+  }
+
+  override fun initToolbar() {
+    assert(activity != null)
+    binding.toolbar.title = getString(R.string.title_users)
+    binding.toolbar.setNavigationIcon(R.drawable.ic_back)
+    binding.toolbar.setNavigationOnClickListener {
+      goBack()
     }
+  }
 
-    override fun initializeComponent(view: View) {
+  override fun showLoading() {
+    binding.isLoading = true
+  }
 
-        viewModel = ViewModelProviders.of(this).get(UserViewModel::class.java)
+  override fun hideLoading() {
+    binding.isLoading = false
+  }
 
-        adapter = UserListAdapter()
-        binding.rvUsers.adapter = adapter
-
-        binding.tab.addOnTabSelectedListener(this)
-
-        viewModel.usersLiveData.observe(this, Observer<List<User>> { users ->
-            if (users != null && users.isNotEmpty()) {
-                hideLoading()
-                adapter.setUserList(users)
-            }
-            binding.executePendingBindings()
-        })
-
-        fetchUsers()
+  override fun onTabSelected(tab: TabLayout.Tab) {
+    val tag = tab.position
+    when (tag) {
+      0 -> fetchUsers()
+      1 -> fetchUsersRx()
     }
+  }
 
-    override fun initToolbar() {
-        assert(activity != null)
-        binding.toolbar.title = getString(R.string.title_users)
-        binding.toolbar.setNavigationIcon(R.drawable.ic_back)
-        binding.toolbar.setNavigationOnClickListener {
-            goBack()
-        }
-    }
+  override fun onTabUnselected(tab: TabLayout.Tab) {
 
-    override fun showLoading() {
-        binding.isLoading = true
-    }
+  }
 
-    override fun hideLoading() {
-        binding.isLoading = false
-    }
+  override fun onTabReselected(tab: TabLayout.Tab) {
 
-    override fun onTabSelected(tab: TabLayout.Tab) {
-        val tag = tab.position
-        when (tag) {
-            0 -> fetchUsers()
-            1 -> fetchUsersRx()
-        }
-    }
+  }
 
-    override fun onTabUnselected(tab: TabLayout.Tab) {
+  private fun fetchUsers() {
+    viewModel.resetData()
+    viewModel.fetchUsers()
+  }
 
-    }
+  private fun fetchUsersRx() {
+    viewModel.resetData()
+    viewModel.fetchUsersRx()
+  }
 
-    override fun onTabReselected(tab: TabLayout.Tab) {
+  /*Example*/
+  private fun fetchNextUsers() {
+    viewModel.setNextPage()
+    viewModel.fetchUsersRx()
+  }
 
-    }
+  override fun onClick(view: View) {
 
-    private fun fetchUsers() {
-        viewModel.resetData()
-        viewModel.fetchUsers(this)
-    }
+  }
 
-    private fun fetchUsersRx() {
-        viewModel.resetData()
-        viewModel.fetchUsersRx(this)
-    }
-
-    /*Example*/
-    private fun fetchNextUsers() {
-        viewModel.setNextPage()
-        viewModel.fetchUsersRx(this)
-    }
-
-    override fun onClick(view: View) {
-
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.onDestroy()
-    }
+  override fun onDestroy() {
+    super.onDestroy()
+    viewModel.onDestroy()
+  }
 
 }
 

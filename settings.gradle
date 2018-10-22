@@ -1,1 +1,1 @@
-include ':android', ':kotlin'
+include ':android', ':kotlin', ':easyapi_java', ':easyapi_kotlin'

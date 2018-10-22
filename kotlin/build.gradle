@@ -14,7 +14,7 @@ android {
         minSdkVersion minSdk
         targetSdkVersion targetSdk
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
     }
     dataBinding {
         enabled = true
@@ -32,14 +32,23 @@ android {
     configurations.all {
         resolutionStrategy.force "com.android.support:support-v4:$supportLibrary"
         resolutionStrategy.force "com.android.support:appcompat-v7:$supportLibrary"
+        resolutionStrategy.force "com.squareup.okhttp3:logging-interceptor:$okhttp"
+        resolutionStrategy.force "com.squareup.retrofit2:retrofit:$retrofit"
+        resolutionStrategy.force "com.squareup.retrofit2:converter-gson:$retrofit"
+        resolutionStrategy.force "com.squareup.retrofit2:adapter-rxjava2:$retrofit"
+        resolutionStrategy.force "io.reactivex.rxjava2:rxandroid:$rxjava"
+        resolutionStrategy.force "android.arch.lifecycle:extensions:$arch"
     }
+}
+
+kapt {
+    generateStubs = true
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     /*Kotlin Support*/
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    kapt 'com.android.databinding:compiler:3.1.1'
     /*Support*/
     implementation "com.android.support:support-v4:$supportLibrary"
     implementation "com.android.support:design:$supportLibrary"
@@ -55,5 +64,6 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$arch"
     /*Other*/
     implementation "com.github.bumptech.glide:glide:$glide"
+    implementation project(':easyapi_kotlin')
 }
 

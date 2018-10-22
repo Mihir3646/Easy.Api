@@ -5,5 +5,5 @@ package com.hlabexamples.easyapi.kotlin.common
  */
 
 interface OnItemClickListener {
-    fun onItemClick(position: Int)
+  fun onItemClick(position: Int)
 }
