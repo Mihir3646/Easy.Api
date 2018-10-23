@@ -166,6 +166,10 @@ public class UserViewModel extends AndroidViewModel {
 ![sample_home](https://i.imgur.com/rWhZXsv.png)
 ![sample_detail](https://i.imgur.com/4iU4ZrI.png)
 
+![illustration](https://i.imgur.com/bDmULNL.png)
+
+Icon made by Freepik from www.flaticon.com 
+
 ***
 
 ## LICENSE
