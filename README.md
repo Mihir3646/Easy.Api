@@ -1,6 +1,9 @@
 ![logo](https://i.imgur.com/ZZMVI7S.png)
 
-# Easy.Api 2.0
+# Easy.Api
+### Java[ ![Java](https://api.bintray.com/packages/harintrivedi/Easy.Api/EasyApi-Java/images/download.svg) ](https://bintray.com/harintrivedi/Easy.Api/EasyApi-Java/_latestVersion)    Kotlin[ ![Download](https://api.bintray.com/packages/harintrivedi/Easy.Api/EasyApi-Kotlin/images/download.svg) ](https://bintray.com/harintrivedi/Easy.Api/EasyApi-Kotlin/_latestVersion)
+
+
 ## Version 2.0 is here 🎉🌟🤟
 
 **What's new:**
