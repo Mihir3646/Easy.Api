@@ -81,16 +81,16 @@ class EasyApiRx<T> internal constructor(config: Config) : EasyApiBase(), EasyApi
       override fun onNext(responseBody: T?) {
         try {
           if (responseBody != null) {
-            responseHandler.invoke(responseBody, true)
+            responseHandler.invoke(responseBody, false)
           } else {
-            responseHandler.invoke(null, false)
+            responseHandler.invoke(null, true)
             if (showErrorMessages) {
               showError(config.getmContext().getString(R.string.alert_message_error))
             }
           }
         } catch (e: Exception) {
           e.printStackTrace()
-          responseHandler.invoke(null, false)
+          responseHandler.invoke(null, true)
           if (showErrorMessages) {
             showError(config.getmContext().getString(R.string.alert_message_error))
           }
@@ -99,7 +99,7 @@ class EasyApiRx<T> internal constructor(config: Config) : EasyApiBase(), EasyApi
       }
 
       override fun onError(e: Throwable) {
-        responseHandler.invoke(null, false)
+        responseHandler.invoke(null, true)
         if (showErrorMessages) {
           showError(NetworkUtils.handleErrorResponse(e))
         }
