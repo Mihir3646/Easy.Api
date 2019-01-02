@@ -85,16 +85,16 @@ public class EasyApiRx<T> extends EasyApiBase implements EasyApiCall<T> {
       public void onNext(T responseBody) {
         try {
           if (responseBody != null) {
-            responseHandler.onResponse(responseBody, true);
+            responseHandler.onResponse(responseBody, false);
           } else {
-            responseHandler.onResponse(null, false);
+            responseHandler.onResponse(null, true);
             if (showErrorMessages) {
               showError(config.getmContext().getString(R.string.alert_message_error));
             }
           }
         } catch (Exception e) {
           e.printStackTrace();
-          responseHandler.onResponse(null, false);
+          responseHandler.onResponse(null, true);
           if (showErrorMessages) {
             showError(config.getmContext().getString(R.string.alert_message_error));
           }
@@ -103,7 +103,7 @@ public class EasyApiRx<T> extends EasyApiBase implements EasyApiCall<T> {
 
       @Override
       public void onError(Throwable e) {
-        responseHandler.onResponse(null, false);
+        responseHandler.onResponse(null, true);
         if (showErrorMessages) {
           showError(NetworkUtils.handleErrorResponse(e));
         }
